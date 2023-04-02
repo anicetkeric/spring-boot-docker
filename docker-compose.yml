@@ -1,0 +1,28 @@
+version: '3.8'
+
+services:
+  api:
+    build: .
+    ports:
+      - '8090:8090'
+    container_name: bookapi
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/bookdb
+      - SPRING_DATASOURCE_USERNAME=book-user
+      - SPRING_DATASOURCE_PASSWORD=k9ZqLC
+    links:
+      - 'db:database'
+  db:
+    image: postgres:15.2
+    restart: always
+    environment:
+      POSTGRES_USER: book-user
+      POSTGRES_PASSWORD: k9ZqLC
+      POSTGRES_DB: bookdb
+    volumes:
+      - db-data:/var/lib/postgresql/data
+    ports:
+      - 6432:5432
+volumes:
+  db-data:
+    driver: local
